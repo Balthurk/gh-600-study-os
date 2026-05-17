@@ -7,7 +7,7 @@ Incluye:
 - rutas de estudio para aprobar y para mejorar nota;
 - contenido sintetizado desde fuentes oficiales exploradas;
 - fuentes separadas entre `Core examen` y `Mejorar nota`;
-- progreso local por horas;
+- progreso local por horas estimadas de trabajo activo;
 - notas personales en navegador;
 - diagramas, checklist y preguntas tipo escenario;
 - conexiones practicas con AgentOS.

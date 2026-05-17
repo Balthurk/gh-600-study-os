@@ -4,11 +4,11 @@ const LESSONS = [
     title: "Mapa oficial del examen GH-600",
     phase: "Mapa oficial",
     track: "Core examen",
-    hours: 3,
+    hours: 1,
     exam: 5,
     agentos: 4,
     summary:
-      "El examen mide si sabes operar, integrar, supervisar y gobernar agentes de IA dentro de flujos SDLC productivos usando GitHub como sistema de registro y control.",
+      "Lectura literal: 20-30 minutos. Trabajo recomendado: 60-90 minutos si lo conviertes en mapa de dominios, pesos, huecos personales y checklist de estudio. El examen mide si sabes operar, integrar, supervisar y gobernar agentes de IA dentro de flujos SDLC productivos usando GitHub como sistema de registro y control.",
     study: [
       "Seis dominios: arquitectura y SDLC, herramientas y entorno, memoria/estado, evaluacion/tuning, coordinacion multiagente y guardrails/accountability.",
       "El dominio de mayor peso es herramientas y entorno: tool permissions, MCP, GitHub APIs, workflows, scopes, branch boundaries, rollbacks, retries y traceability.",
