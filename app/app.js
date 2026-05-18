@@ -643,6 +643,122 @@ const SOURCES = {
   S113: ["gh-aw repository", "Mejorar nota", "Proyecto GitHub Agentic Workflows y workflow types.", "https://github.com/github/gh-aw"]
 };
 
+const SOURCE_TIME_MINUTES = {
+  S001: 30,
+  S002: 20,
+  S003: 5,
+  S004: 5,
+  S005: 5,
+  S006: 6,
+  S007: 5,
+  S008: 5,
+  S009: 5,
+  S010: 5,
+  S011: 5,
+  S012: 5,
+  S013: 7,
+  S014: 5,
+  S015: 5,
+  S016: 8,
+  S017: 5,
+  S018: 5,
+  S019: 8,
+  S020: 13,
+  S021: 10,
+  S022: 6,
+  S023: 5,
+  S024: 14,
+  S025: 16,
+  S026: 10,
+  S027: 10,
+  S028: 10,
+  S029: 10,
+  S030: 10,
+  S031: 11,
+  S032: 15,
+  S033: 10,
+  S034: 14,
+  S035: 10,
+  S036: 10,
+  S037: 10,
+  S038: 10,
+  S039: 10,
+  S040: 12,
+  S041: 10,
+  S042: 11,
+  S043: 10,
+  S044: 10,
+  S045: 20,
+  S046: 10,
+  S047: 10,
+  S048: 10,
+  S049: 10,
+  S050: 10,
+  S051: 10,
+  S052: 11,
+  S053: 10,
+  S054: 10,
+  S055: 10,
+  S056: 12,
+  S057: 21,
+  S058: 13,
+  S059: 12,
+  S060: 12,
+  S061: 19,
+  S062: 21,
+  S063: 14,
+  S064: 10,
+  S065: 19,
+  S066: 10,
+  S067: 10,
+  S068: 10,
+  S069: 11,
+  S070: 10,
+  S071: 10,
+  S072: 12,
+  S073: 20,
+  S074: 10,
+  S075: 10,
+  S076: 13,
+  S077: 10,
+  S078: 19,
+  S079: 10,
+  S080: 10,
+  S081: 10,
+  S082: 10,
+  S083: 90,
+  S084: 65,
+  S085: 46,
+  S086: 13,
+  S087: 10,
+  S088: 10,
+  S089: 10,
+  S090: 10,
+  S091: 10,
+  S092: 10,
+  S093: 10,
+  S094: 10,
+  S095: 10,
+  S096: 10,
+  S097: 10,
+  S098: 13,
+  S099: 10,
+  S100: 10,
+  S101: 10,
+  S102: 10,
+  S103: 10,
+  S104: 10,
+  S105: 11,
+  S106: 11,
+  S107: 10,
+  S108: 31,
+  S109: 10,
+  S110: 10,
+  S111: 8,
+  S112: 18,
+  S113: 25,
+};
+
 const ROUTES = {
   "Aprobar GH-600": ["mapa", "foundation", "sdlc", "governance", "actions", "mcp", "boundaries", "custom-agents", "memory", "cli", "evaluation", "guardrails", "cloud-agent"],
   "Aprobar + AgentOS": LESSONS.map((lesson) => lesson.id),
@@ -767,7 +883,7 @@ function stats() {
 function sourceById(id) {
   const source = SOURCES[id];
   if (!source) return null;
-  return { id, title: source[0], track: source[1], extract: source[2], url: source[3] };
+  return { id, title: source[0], track: source[1], extract: source[2], url: source[3], minutes: SOURCE_TIME_MINUTES[id] || 15 };
 }
 
 function allSources() {
@@ -782,7 +898,10 @@ function sourceRows(ids) {
         <p>${esc(source.extract)}</p>
         <div class="url">${esc(source.url)}</div>
       </div>
-      <button class="btn copy" data-copy="${esc(source.url)}">Copiar URL</button>
+      <div class="source-actions">
+        <span class="time-badge" title="Estimacion de lectura calmada con margen x1,5">${source.minutes} min</span>
+        <button class="btn copy" data-copy="${esc(source.url)}">Copiar URL</button>
+      </div>
     </div>
   `).join("");
 }
@@ -845,6 +964,11 @@ function renderSidebar() {
       <section class="progress-wrap">
         <div class="progress-meta"><span>${st.complete.toFixed(1)}h hechas</span><span>${st.total.toFixed(1)}h total</span></div>
         <div class="progress"><span style="width:${st.percent}%"></span></div>
+      </section>
+
+      <section class="next-card">
+        <span class="eyebrow">Guardado local activo</span>
+        <p>Progreso, ruta, bloque activo, notas y checklist se guardan automaticamente en este navegador con localStorage.</p>
       </section>
 
       <nav class="nav-list">${items || "<p>No hay bloques con ese filtro.</p>"}</nav>
@@ -933,6 +1057,7 @@ function renderSources() {
         ${sources.map((source) => `
           <article class="source-card">
             <span class="pill ${source.track === "Mejorar nota" ? "extra" : "core"}">${esc(source.track)}</span>
+            <span class="time-badge" title="Estimacion de lectura calmada con margen x1,5">${source.minutes} min</span>
             <h3 style="margin-top:10px">${esc(source.title)}</h3>
             <p>${esc(source.extract)}</p>
             <div class="url">${esc(source.url)}</div>
