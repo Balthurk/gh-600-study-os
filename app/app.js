@@ -646,26 +646,26 @@ const SOURCES = {
 const SOURCE_TIME_MINUTES = {
   S001: 30,
   S002: 20,
-  S003: 5,
+  S003: 40,
   S004: 5,
   S005: 5,
-  S006: 6,
+  S006: 5,
   S007: 5,
   S008: 5,
   S009: 5,
-  S010: 5,
+  S010: 45,
   S011: 5,
   S012: 5,
-  S013: 7,
+  S013: 5,
   S014: 5,
   S015: 5,
-  S016: 8,
+  S016: 5,
   S017: 5,
-  S018: 5,
-  S019: 8,
-  S020: 13,
-  S021: 10,
-  S022: 6,
+  S018: 35,
+  S019: 5,
+  S020: 5,
+  S021: 5,
+  S022: 5,
   S023: 5,
   S024: 14,
   S025: 16,
@@ -885,7 +885,9 @@ function stats() {
 function sourceById(id) {
   const source = SOURCES[id];
   if (!source) return null;
-  return { id, title: source[0], track: source[1], extract: source[2], url: source[3], minutes: SOURCE_TIME_MINUTES[id] || 15 };
+  const url = source[3];
+  const official = url.includes("learn.microsoft.com/en-us/training/modules/");
+  return { id, title: source[0], track: source[1], extract: source[2], url, minutes: SOURCE_TIME_MINUTES[id] || 15, official };
 }
 
 function allSources() {
@@ -911,7 +913,7 @@ function sourceRows(ids) {
           <span class="check-dot">${state.sourceDone[source.id] ? "✓" : ""}</span>
           ${state.sourceDone[source.id] ? "Leida" : "Marcar leida"}
         </button>
-        <span class="time-badge" title="Estimacion de lectura calmada con margen x1,5">${source.minutes} min</span>
+        <span class="time-badge ${source.official ? "official" : ""}" title="${source.official ? "Tiempo oficial publicado por Microsoft Learn" : "Estimacion de lectura calmada con margen x1,5"}">${source.minutes} min · ${source.official ? "oficial" : "estimado"}</span>
         <button class="btn copy" data-copy="${esc(source.url)}">Copiar URL</button>
       </div>
     </div>
@@ -1073,7 +1075,7 @@ function renderSources() {
         ${sources.map((source) => `
           <article class="source-card ${state.sourceDone[source.id] ? "source-read" : ""}">
             <span class="pill ${source.track === "Mejorar nota" ? "extra" : "core"}">${esc(source.track)}</span>
-            <span class="time-badge" title="Estimacion de lectura calmada con margen x1,5">${source.minutes} min</span>
+            <span class="time-badge ${source.official ? "official" : ""}" title="${source.official ? "Tiempo oficial publicado por Microsoft Learn" : "Estimacion de lectura calmada con margen x1,5"}">${source.minutes} min · ${source.official ? "oficial" : "estimado"}</span>
             <h3 style="margin-top:10px">${esc(source.title)}</h3>
             <p>${esc(source.extract)}</p>
             <div class="url">${esc(source.url)}</div>

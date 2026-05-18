@@ -543,6 +543,12 @@ textarea:focus {
   font-weight: 900;
 }
 
+.time-badge.official {
+  border-color: rgba(29, 78, 216, 0.26);
+  background: rgba(29, 78, 216, 0.08);
+  color: var(--blue);
+}
+
 .source-row a {
   color: var(--blue);
   font-weight: 800;

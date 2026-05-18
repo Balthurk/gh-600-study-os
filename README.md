@@ -8,7 +8,7 @@ Incluye:
 - contenido sintetizado desde fuentes oficiales exploradas;
 - fuentes separadas entre `Core examen` y `Mejorar nota`;
 - progreso local por horas estimadas de trabajo activo;
-- tiempo estimado por fuente usando lectura calmada con margen;
+- tiempo por fuente: oficial cuando Microsoft Learn lo publica, estimado con margen cuando no;
 - marcado persistente de fuentes leidas;
 - notas personales en navegador;
 - diagramas, checklist y preguntas tipo escenario;
