@@ -478,6 +478,13 @@ textarea:focus {
   margin-top: 14px;
 }
 
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .source-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -488,10 +495,37 @@ textarea:focus {
   background: #fff;
 }
 
+.source-row.source-read,
+.source-card.source-read {
+  border-color: rgba(15, 118, 110, 0.32);
+  background: rgba(15, 118, 110, 0.045);
+}
+
 .source-actions {
   display: flex;
   align-items: flex-start;
   gap: 8px;
+}
+
+.source-read-toggle {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink);
+  padding: 0 11px;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.source-read-toggle[aria-pressed="true"] {
+  border-color: rgba(15, 118, 110, 0.38);
+  background: rgba(15, 118, 110, 0.09);
+  color: var(--accent);
 }
 
 .time-badge {

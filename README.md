@@ -9,6 +9,7 @@ Incluye:
 - fuentes separadas entre `Core examen` y `Mejorar nota`;
 - progreso local por horas estimadas de trabajo activo;
 - tiempo estimado por fuente usando lectura calmada con margen;
+- marcado persistente de fuentes leidas;
 - notas personales en navegador;
 - diagramas, checklist y preguntas tipo escenario;
 - conexiones practicas con AgentOS.

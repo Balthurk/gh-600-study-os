@@ -823,6 +823,7 @@ const state = {
   query: "",
   track: "Todas",
   done: JSON.parse(localStorage.getItem("gh600.done") || "{}"),
+  sourceDone: JSON.parse(localStorage.getItem("gh600.sourceDone") || "{}"),
   notes: JSON.parse(localStorage.getItem("gh600.notes") || "{}")
 };
 
@@ -831,6 +832,7 @@ function save() {
   localStorage.setItem("gh600.tab", state.activeTab);
   localStorage.setItem("gh600.lesson", state.selectedLesson);
   localStorage.setItem("gh600.done", JSON.stringify(state.done));
+  localStorage.setItem("gh600.sourceDone", JSON.stringify(state.sourceDone));
   localStorage.setItem("gh600.notes", JSON.stringify(state.notes));
 }
 
@@ -890,15 +892,25 @@ function allSources() {
   return Object.keys(SOURCES).map(sourceById);
 }
 
+function sourceProgress(ids) {
+  const total = ids.length;
+  const read = ids.filter((id) => state.sourceDone[id]).length;
+  return { read, total };
+}
+
 function sourceRows(ids) {
   return ids.map(sourceById).filter(Boolean).map((source) => `
-    <div class="source-row">
+    <div class="source-row ${state.sourceDone[source.id] ? "source-read" : ""}">
       <div>
         <a href="${esc(source.url)}" target="_blank" rel="noreferrer">${esc(source.title)}</a>
         <p>${esc(source.extract)}</p>
         <div class="url">${esc(source.url)}</div>
       </div>
       <div class="source-actions">
+        <button class="source-read-toggle" data-source-read="${source.id}" aria-pressed="${state.sourceDone[source.id] ? "true" : "false"}">
+          <span class="check-dot">${state.sourceDone[source.id] ? "✓" : ""}</span>
+          ${state.sourceDone[source.id] ? "Leida" : "Marcar leida"}
+        </button>
         <span class="time-badge" title="Estimacion de lectura calmada con margen x1,5">${source.minutes} min</span>
         <button class="btn copy" data-copy="${esc(source.url)}">Copiar URL</button>
       </div>
@@ -968,7 +980,7 @@ function renderSidebar() {
 
       <section class="next-card">
         <span class="eyebrow">Guardado local activo</span>
-        <p>Progreso, ruta, bloque activo, notas y checklist se guardan automaticamente en este navegador con localStorage.</p>
+        <p>Progreso, fuentes leidas, ruta, bloque activo, notas y checklist se guardan automaticamente en este navegador con localStorage.</p>
       </section>
 
       <nav class="nav-list">${items || "<p>No hay bloques con ese filtro.</p>"}</nav>
@@ -992,6 +1004,7 @@ function renderLesson() {
     state.selectedLesson = lesson.id;
     save();
   }
+  const sourceStats = sourceProgress(lesson.sources);
   return `
     ${renderHero()}
     <article class="lesson-card">
@@ -1033,7 +1046,10 @@ function renderLesson() {
       </section>
 
       <section style="margin-top:18px">
-        <h3>Fuentes usadas en este bloque</h3>
+        <div class="section-head">
+          <h3>Fuentes usadas en este bloque</h3>
+          <span class="pill agentos">${sourceStats.read}/${sourceStats.total} leidas</span>
+        </div>
         <div class="source-list">${sourceRows(lesson.sources)}</div>
       </section>
     </article>
@@ -1055,12 +1071,16 @@ function renderSources() {
       `marcadas como Mejorar nota son utiles para subir nivel, pero no deben desplazar el core del study guide.</p>
       <div class="source-grid">
         ${sources.map((source) => `
-          <article class="source-card">
+          <article class="source-card ${state.sourceDone[source.id] ? "source-read" : ""}">
             <span class="pill ${source.track === "Mejorar nota" ? "extra" : "core"}">${esc(source.track)}</span>
             <span class="time-badge" title="Estimacion de lectura calmada con margen x1,5">${source.minutes} min</span>
             <h3 style="margin-top:10px">${esc(source.title)}</h3>
             <p>${esc(source.extract)}</p>
             <div class="url">${esc(source.url)}</div>
+            <button class="source-read-toggle" data-source-read="${source.id}" aria-pressed="${state.sourceDone[source.id] ? "true" : "false"}" style="margin-top:10px">
+              <span class="check-dot">${state.sourceDone[source.id] ? "✓" : ""}</span>
+              ${state.sourceDone[source.id] ? "Leida" : "Marcar leida"}
+            </button>
             <button class="btn copy" data-copy="${esc(source.url)}" style="margin-top:10px">Copiar URL</button>
           </article>
         `).join("")}
@@ -1193,6 +1213,15 @@ function bind() {
     });
   });
 
+  document.querySelectorAll("[data-source-read]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const id = button.dataset.sourceRead;
+      state.sourceDone[id] = !state.sourceDone[id];
+      save();
+      render();
+    });
+  });
+
   document.querySelectorAll("[data-check-final]").forEach((box) => {
     box.addEventListener("change", () => {
       localStorage.setItem(`gh600.final.${box.dataset.checkFinal}`, box.checked ? "1" : "0");
@@ -1256,6 +1285,7 @@ function bind() {
       state.query = "";
       state.track = "Todas";
       state.done = {};
+      state.sourceDone = {};
       state.notes = {};
       save();
       render();
