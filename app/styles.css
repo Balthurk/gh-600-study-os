@@ -651,6 +651,125 @@ textarea:focus {
   gap: 12px;
 }
 
+.exam-shell {
+  margin-top: 18px;
+}
+
+.exam-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+  gap: 14px;
+  align-items: start;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+}
+
+.exam-toolbar h3 {
+  margin: 0 0 8px;
+  font-size: 24px;
+}
+
+.exam-toolbar p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.exam-controls {
+  display: grid;
+  gap: 8px;
+}
+
+.exam-metrics {
+  margin-top: 14px;
+}
+
+.exam-card {
+  margin-top: 14px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.exam-question {
+  font-size: 22px;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+.option-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.option-card {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  line-height: 1.45;
+}
+
+.option-card.selected {
+  border-color: rgba(29, 78, 216, 0.35);
+  background: rgba(29, 78, 216, 0.06);
+}
+
+.option-card.correct {
+  border-color: rgba(22, 101, 52, 0.4);
+  background: rgba(22, 101, 52, 0.09);
+}
+
+.option-card.incorrect {
+  border-color: rgba(153, 27, 27, 0.38);
+  background: rgba(153, 27, 27, 0.08);
+}
+
+.answer-panel {
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+
+.answer-panel h4 {
+  margin: 0 0 8px;
+}
+
+.answer-panel p {
+  margin: 8px 0 0;
+  line-height: 1.55;
+}
+
+.answer-ok {
+  border-color: rgba(22, 101, 52, 0.35);
+  background: rgba(22, 101, 52, 0.08);
+}
+
+.answer-bad {
+  border-color: rgba(153, 27, 27, 0.35);
+  background: rgba(153, 27, 27, 0.07);
+}
+
+.exam-hint {
+  color: var(--muted);
+}
+
+.exam-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
 .hidden {
   display: none !important;
 }
@@ -689,6 +808,7 @@ textarea:focus {
   .detail-grid,
   .source-grid,
   .diagram-grid,
+  .exam-toolbar,
   .checklist,
   .practice {
     grid-template-columns: 1fr;

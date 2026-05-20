@@ -10,6 +10,7 @@ Incluye:
 - progreso local por horas estimadas de trabajo activo;
 - tiempo por fuente: oficial cuando Microsoft Learn lo publica, estimado con margen cuando no;
 - marcado persistente de fuentes leidas;
+- simulador de examen con preguntas de respuesta unica y multiple, correccion y explicacion;
 - notas personales en navegador;
 - diagramas, checklist y preguntas tipo escenario;
 - conexiones practicas con AgentOS.

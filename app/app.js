@@ -816,6 +816,1266 @@ const CHECKLIST = [
   "Extra: se explicar Agentic Workflows, safe outputs, read-only agent job y write job separado."
 ];
 
+const QUESTION_BANK = [
+  {
+    "id": "Q001",
+    "domain": "Arquitectura y SDLC",
+    "type": "single",
+    "prompt": "Un agente propone cambiar auth, workflows y despliegue en un solo PR. Que respuesta es mas segura?",
+    "options": [
+      "Aceptar si los tests pasan",
+      "Pedir plan-first con alcance, riesgos, gates y dividir cambios",
+      "Dar permisos admin temporalmente",
+      "Ejecutar directo en main para reducir drift"
+    ],
+    "correct": [
+      1
+    ],
+    "explanation": "Cambios de auth/workflows/deploy son de alto riesgo. El patron correcto es plan-first, dividir alcance y exigir gates/reviews antes de ejecutar.",
+    "source": "Designing Agent Architecture"
+  },
+  {
+    "id": "Q002",
+    "domain": "Arquitectura y SDLC",
+    "type": "multi",
+    "prompt": "Que elementos hacen un task contract util para un agente?",
+    "options": [
+      "Inputs claros",
+      "Outputs esperados",
+      "Criterios de exito verificables",
+      "Opinion general del agente sin evidencias",
+      "Ruta de rollback/escalado"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      4
+    ],
+    "explanation": "Un contrato util define entrada, salida, exito observable y que hacer si falla. Una opinion sin evidencias no gobierna nada.",
+    "source": "Microsoft Learn SDLC"
+  },
+  {
+    "id": "Q003",
+    "domain": "Arquitectura y SDLC",
+    "type": "single",
+    "prompt": "Cuando conviene separar planner y executor?",
+    "options": [
+      "Nunca, aumenta coste",
+      "Solo en cambios de documentacion",
+      "Cuando el riesgo exige revisar el plan antes de tocar artefactos",
+      "Cuando no hay GitHub Actions"
+    ],
+    "correct": [
+      2
+    ],
+    "explanation": "Separar plan y ejecucion reduce impacto en tareas sensibles y permite revision humana/policy antes del cambio.",
+    "source": "Plan/reason/execution"
+  },
+  {
+    "id": "Q004",
+    "domain": "Arquitectura y SDLC",
+    "type": "single",
+    "prompt": "Que significa GitHub como control plane para agentes?",
+    "options": [
+      "Repositorio usado solo como backup",
+      "Lugar donde se registran tareas, branches, PRs, checks, reviews y decisiones",
+      "Interfaz de chat del agente",
+      "Servidor MCP principal"
+    ],
+    "correct": [
+      1
+    ],
+    "explanation": "Control plane significa que GitHub concentra estado, revision, reglas, evidencias y decisiones del workflow.",
+    "source": "Foundations"
+  },
+  {
+    "id": "Q005",
+    "domain": "Arquitectura y SDLC",
+    "type": "multi",
+    "prompt": "En un PR generado por agente, que evidencias deberian aparecer?",
+    "options": [
+      "Plan resumido",
+      "Scope y archivos tocados",
+      "Checks o pruebas ejecutadas",
+      "Ruta de rollback",
+      "Solo 'LGTM by AI'"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "El PR debe ser auditable: plan, scope, validacion y rollback. Una aprobacion textual del agente no es evidencia.",
+    "source": "PR governance"
+  },
+  {
+    "id": "Q006",
+    "domain": "Arquitectura y SDLC",
+    "type": "single",
+    "prompt": "Un agente abre un PR sin explicar objetivo ni criterios. Que anti-pattern es?",
+    "options": [
+      "Planless execution",
+      "Least privilege",
+      "Safe outputs",
+      "Content exclusion"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "Es ejecucion sin plan visible. Dificulta revision, ownership y trazabilidad.",
+    "source": "Foundations risks"
+  },
+  {
+    "id": "Q007",
+    "domain": "Arquitectura y SDLC",
+    "type": "single",
+    "prompt": "El contributor model implica que el codigo de agentes debe...",
+    "options": [
+      "Aceptarse si viene de Copilot",
+      "Rechazarse por defecto",
+      "Evaluarse como cualquier contribucion: intent, scope, evidence, policy",
+      "Saltarse CODEOWNERS"
+    ],
+    "correct": [
+      2
+    ],
+    "explanation": "El modelo de contribuidor evita sesgos a favor o en contra de IA; se revisa la contribucion por evidencia y politica.",
+    "source": "Contributor model"
+  },
+  {
+    "id": "Q008",
+    "domain": "Arquitectura y SDLC",
+    "type": "multi",
+    "prompt": "Que tareas son candidatas a ejecucion autonoma de menor riesgo?",
+    "options": [
+      "Actualizar docs no sensibles",
+      "Cambiar README",
+      "Rotar secretos de produccion",
+      "Modificar workflow deploy-prod",
+      "Corregir typo en test"
+    ],
+    "correct": [
+      0,
+      1,
+      4
+    ],
+    "explanation": "Docs/typos/tests de bajo impacto pueden automatizarse mas; secrets, prod y workflows son sensibles.",
+    "source": "Risk-based autonomy"
+  },
+  {
+    "id": "Q009",
+    "domain": "Arquitectura y SDLC",
+    "type": "single",
+    "prompt": "Si el agente no conoce dependencias del repo, que deberia hacer primero?",
+    "options": [
+      "Inferir y editar",
+      "Leer contexto actual y construir plan",
+      "Crear release",
+      "Borrar caches"
+    ],
+    "correct": [
+      1
+    ],
+    "explanation": "Primero debe reunir contexto actual, no actuar con supuestos.",
+    "source": "Agent lifecycle"
+  },
+  {
+    "id": "Q010",
+    "domain": "Arquitectura y SDLC",
+    "type": "single",
+    "prompt": "Que output es mas durable para revisar trabajo agentico?",
+    "options": [
+      "Mensaje de chat sin enlaces",
+      "PR con branch, diff, checks y comentarios",
+      "Captura de pantalla aislada",
+      "Respuesta oral"
+    ],
+    "correct": [
+      1
+    ],
+    "explanation": "Un PR conserva artefactos, diff, revision y checks dentro del sistema de registro.",
+    "source": "GitHub control plane"
+  },
+  {
+    "id": "Q011",
+    "domain": "Herramientas y entorno",
+    "type": "single",
+    "prompt": "Un MCP server nuevo permite crear issues, modificar PRs y leer secretos. Que accion previa es correcta?",
+    "options": [
+      "Permitirlo porque es oficial",
+      "Clasificar herramientas, scopes, auth y approval gates antes de habilitarlo",
+      "Usarlo solo si el agente promete cuidado",
+      "Activarlo en todos los repos"
+    ],
+    "correct": [
+      1
+    ],
+    "explanation": "MCP expone acciones. Debe gobernarse con scopes, allow list, owner, riesgos y aprobaciones.",
+    "source": "MCP governance"
+  },
+  {
+    "id": "Q012",
+    "domain": "Herramientas y entorno",
+    "type": "multi",
+    "prompt": "Que componentes hacen gobernable MCP?",
+    "options": [
+      "Registry",
+      "Allow list",
+      "Toolsets/scopes",
+      "Audit logs",
+      "Prompt bonito"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Registry, allow list, toolsets y logs son controles reales. El prompt ayuda, pero no sustituye enforcement.",
+    "source": "MCP"
+  },
+  {
+    "id": "Q013",
+    "domain": "Herramientas y entorno",
+    "type": "single",
+    "prompt": "Que frontera evita cambios directos en main?",
+    "options": [
+      "Branch isolation + PR",
+      "Memoria larga",
+      "MCP resources",
+      "Prompt de sistema"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "Branch isolation fuerza cambios en rama y conversion a PR revisable.",
+    "source": "Execution boundaries"
+  },
+  {
+    "id": "Q014",
+    "domain": "Herramientas y entorno",
+    "type": "single",
+    "prompt": "Un workflow se dispara por schedule y pull_request, pero asume github.event.pull_request. Que falta?",
+    "options": [
+      "Mas secrets",
+      "Event-aware gating con if conditions",
+      "Borrar workflow_dispatch",
+      "Usar chmod"
+    ],
+    "correct": [
+      1
+    ],
+    "explanation": "Triggers multiples requieren condiciones que validen contexto antes de ejecutar logica especifica de PR.",
+    "source": "Reliable workflows"
+  },
+  {
+    "id": "Q015",
+    "domain": "Herramientas y entorno",
+    "type": "multi",
+    "prompt": "Que acciones reducen blast radius de herramientas?",
+    "options": [
+      "Permisos minimos",
+      "Deny tools peligrosas",
+      "Scopes por repo/rama",
+      "Tokens admin globales",
+      "Approval antes de write"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      4
+    ],
+    "explanation": "Least privilege, deny lists, scopes y approvals reducen impacto. Tokens globales lo aumentan.",
+    "source": "Tool permissions"
+  },
+  {
+    "id": "Q016",
+    "domain": "Herramientas y entorno",
+    "type": "single",
+    "prompt": "Si una tool call falla por permiso insuficiente, que root cause probable es?",
+    "options": [
+      "Reasoning error",
+      "Permission issue",
+      "Memory drift",
+      "Public code match"
+    ],
+    "correct": [
+      1
+    ],
+    "explanation": "El sintoma apunta a permisos/scopes, no necesariamente razonamiento.",
+    "source": "Error analysis"
+  },
+  {
+    "id": "Q017",
+    "domain": "Herramientas y entorno",
+    "type": "multi",
+    "prompt": "Que debe incluir un registro de tool use auditable?",
+    "options": [
+      "Herramienta invocada",
+      "Input relevante no secreto",
+      "Resultado/estado",
+      "Decision posterior",
+      "Token secreto completo"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Se registra lo necesario para auditoria sin exponer secretos.",
+    "source": "Observability"
+  },
+  {
+    "id": "Q018",
+    "domain": "Herramientas y entorno",
+    "type": "single",
+    "prompt": "Remote MCP frente a local MCP: cual es la diferencia operativa clave?",
+    "options": [
+      "Remote reduce setup local; local puede acceder a recursos locales",
+      "Local siempre es mas seguro",
+      "Remote no necesita governance",
+      "No hay diferencia"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "Remote simplifica despliegue; local puede tener acceso al entorno de usuario y requiere cuidado.",
+    "source": "MCP server concepts"
+  },
+  {
+    "id": "Q019",
+    "domain": "Herramientas y entorno",
+    "type": "single",
+    "prompt": "Que deberia hacer un agente tras dos retries fallidos por la misma causa?",
+    "options": [
+      "Retry infinito",
+      "Escalar con resumen de intentos y evidencias",
+      "Ignorar error",
+      "Mergear parcial"
+    ],
+    "correct": [
+      1
+    ],
+    "explanation": "Retries deben tener limite. Fallos repetidos requieren escalado o cambio de estrategia.",
+    "source": "Execution limits"
+  },
+  {
+    "id": "Q020",
+    "domain": "Herramientas y entorno",
+    "type": "multi",
+    "prompt": "Que elementos son boundaries de ejecucion en GitHub?",
+    "options": [
+      "Repo scope",
+      "Branch scope",
+      "Workflow permissions",
+      "Environment approvals",
+      "Color del badge"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "El alcance operativo real lo dan repos, branches, permisos y environments.",
+    "source": "Execution context"
+  },
+  {
+    "id": "Q021",
+    "domain": "Memoria y estado",
+    "type": "single",
+    "prompt": "Un agente usa una decision antigua que ya no coincide con main. Como se llama el riesgo?",
+    "options": [
+      "Context drift",
+      "CODEOWNERS",
+      "Safe output",
+      "SARIF"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "Context drift ocurre cuando el agente actua con informacion obsoleta o contradictoria.",
+    "source": "Memory/state"
+  },
+  {
+    "id": "Q022",
+    "domain": "Memoria y estado",
+    "type": "multi",
+    "prompt": "Que campos hacen verificable una memoria reutilizable?",
+    "options": [
+      "Origen",
+      "Fecha/TTL",
+      "Scope",
+      "Ultima validacion",
+      "Secreto en claro"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Memoria confiable necesita origen, fecha, scope y validacion. No debe guardar secretos.",
+    "source": "Copilot Memory"
+  },
+  {
+    "id": "Q023",
+    "domain": "Memoria y estado",
+    "type": "single",
+    "prompt": "Que senal deberia pesar mas que una preferencia guardada en memoria?",
+    "options": [
+      "Estado actual del repo y checks",
+      "La primera respuesta del agente",
+      "Un prompt viejo",
+      "Una suposicion"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "La memoria no debe ganar frente a artefactos actuales y verificables.",
+    "source": "Repository indexing"
+  },
+  {
+    "id": "Q024",
+    "domain": "Memoria y estado",
+    "type": "single",
+    "prompt": "Diferencia entre memoria conversacional y estado durable?",
+    "options": [
+      "No hay diferencia",
+      "La memoria ayuda contexto; el estado durable registra progreso/evidencia reanudable",
+      "El estado durable solo existe en chat",
+      "La memoria siempre es mas fiable"
+    ],
+    "correct": [
+      1
+    ],
+    "explanation": "El estado durable sirve para reanudar y auditar; la memoria contextual puede estar incompleta o stale.",
+    "source": "Session data"
+  },
+  {
+    "id": "Q025",
+    "domain": "Memoria y estado",
+    "type": "multi",
+    "prompt": "Como reducir stale context en tareas largas?",
+    "options": [
+      "Readback del repo actual",
+      "Revalidar branch/checks",
+      "TTL de facts",
+      "Ignorar cambios externos",
+      "Reset/escalado si contradiccion"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      4
+    ],
+    "explanation": "Releer, validar y caducar informacion reduce drift. Ignorar cambios externos lo empeora.",
+    "source": "State management"
+  },
+  {
+    "id": "Q026",
+    "domain": "Memoria y estado",
+    "type": "single",
+    "prompt": "Content exclusion sirve principalmente para...",
+    "options": [
+      "Controlar parte del contenido disponible como contexto",
+      "Aprobar PRs",
+      "Ejecutar tests",
+      "Crear MCP servers"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "Content exclusion limita que contenido entra en ciertas experiencias de contexto.",
+    "source": "Content exclusion"
+  },
+  {
+    "id": "Q027",
+    "domain": "Memoria y estado",
+    "type": "multi",
+    "prompt": "Que datos son malos candidatos para memoria persistente?",
+    "options": [
+      "Secrets",
+      "Tokens",
+      "Decisiones temporales sin TTL",
+      "Preferencias generales no sensibles",
+      "Datos personales innecesarios"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      4
+    ],
+    "explanation": "Memoria debe evitar secretos, datos sensibles y facts temporales sin expiracion.",
+    "source": "Memory privacy"
+  },
+  {
+    "id": "Q028",
+    "domain": "Memoria y estado",
+    "type": "single",
+    "prompt": "Si el agente pierde continuidad tras una pausa, que recurso ayuda a reconstruir?",
+    "options": [
+      "Session data/logs",
+      "Cambiar branch protection",
+      "Borrar PR",
+      "Desactivar checks"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "Historial de sesion y logs permiten reconstruir acciones y estado.",
+    "source": "Chronicle/session"
+  },
+  {
+    "id": "Q029",
+    "domain": "Evaluacion y tuning",
+    "type": "single",
+    "prompt": "Un check pasa, pero no cubre la vulnerabilidad cambiada. Que conclusion es correcta?",
+    "options": [
+      "El cambio es seguro",
+      "El check no prueba el riesgo relevante",
+      "Hay que desactivar el check",
+      "El agente aprueba automaticamente"
+    ],
+    "correct": [
+      1
+    ],
+    "explanation": "La validacion debe corresponder al riesgo real; un check irrelevante no demuestra seguridad.",
+    "source": "Evaluation"
+  },
+  {
+    "id": "Q030",
+    "domain": "Evaluacion y tuning",
+    "type": "multi",
+    "prompt": "Que senales ayudan a evaluar trabajo agentico?",
+    "options": [
+      "Status checks",
+      "Review comments",
+      "Code scanning",
+      "Artifacts",
+      "Confianza subjetiva del modelo"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Se necesitan senales del sistema y revision humana; la confianza subjetiva no basta.",
+    "source": "Checks/API"
+  },
+  {
+    "id": "Q031",
+    "domain": "Evaluacion y tuning",
+    "type": "single",
+    "prompt": "Un agente hace cambios demasiado amplios de forma repetida. Que tuning es razonable?",
+    "options": [
+      "Aumentar permisos",
+      "Definir scope, file allowlist y criterios de salida mas estrictos",
+      "Quitar reviews",
+      "Merge automatico"
+    ],
+    "correct": [
+      1
+    ],
+    "explanation": "El problema es disciplina de scope; se corrige con constraints y gates.",
+    "source": "Tuning"
+  },
+  {
+    "id": "Q032",
+    "domain": "Evaluacion y tuning",
+    "type": "multi",
+    "prompt": "Que root causes deberias distinguir en error analysis?",
+    "options": [
+      "Reasoning error",
+      "Tool misuse",
+      "Stale context",
+      "Permission issue",
+      "Environment mismatch"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "explanation": "Clasificar causa raiz evita aplicar fixes equivocados.",
+    "source": "Failure taxonomy"
+  },
+  {
+    "id": "Q033",
+    "domain": "Evaluacion y tuning",
+    "type": "single",
+    "prompt": "Si un workflow falla porque falta una dependencia en runner, el root cause es mas probable...",
+    "options": [
+      "Environment mismatch",
+      "Prompt injection",
+      "CODEOWNERS",
+      "Memory TTL"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "El fallo viene del entorno, no necesariamente del razonamiento.",
+    "source": "Actions logs"
+  },
+  {
+    "id": "Q034",
+    "domain": "Evaluacion y tuning",
+    "type": "single",
+    "prompt": "Que es tuning controlado?",
+    "options": [
+      "Cambiar prompt sin medir",
+      "Registrar antes/despues y ajustar constraints/tools/workflows segun evidencia",
+      "Borrar logs",
+      "Subir temperatura"
+    ],
+    "correct": [
+      1
+    ],
+    "explanation": "Tuning debe tener baseline, cambio y verificacion posterior.",
+    "source": "Tuning"
+  },
+  {
+    "id": "Q035",
+    "domain": "Evaluacion y tuning",
+    "type": "multi",
+    "prompt": "Que artefactos pueden conservar evidencia de evaluacion?",
+    "options": [
+      "Workflow artifacts",
+      "SARIF",
+      "Check runs",
+      "PR comments",
+      "Mensajes efimeros sin copia"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Artifacts, SARIF, checks y comments quedan disponibles para auditoria.",
+    "source": "Artifacts/SARIF"
+  },
+  {
+    "id": "Q036",
+    "domain": "Evaluacion y tuning",
+    "type": "single",
+    "prompt": "Un retry arregla un fallo flaky una vez. Que deberias hacer?",
+    "options": [
+      "Ignorar para siempre",
+      "Registrar flakiness y evitar asumir que el sistema es estable",
+      "Borrar test",
+      "Merge sin notas"
+    ],
+    "correct": [
+      1
+    ],
+    "explanation": "Los flakes deben registrarse; un rerun verde no elimina el riesgo.",
+    "source": "Reruns"
+  },
+  {
+    "id": "Q037",
+    "domain": "Multiagente",
+    "type": "single",
+    "prompt": "Dos agentes editan el mismo archivo sin coordinacion. Riesgo principal?",
+    "options": [
+      "Conflictos y trabajo duplicado",
+      "Mas seguridad",
+      "Mejor CODEOWNERS",
+      "Menor drift siempre"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "La paralelizacion necesita write scopes y ownership claros.",
+    "source": "Multi-agent coordination"
+  },
+  {
+    "id": "Q038",
+    "domain": "Multiagente",
+    "type": "multi",
+    "prompt": "Que debe definir un handoff entre agentes?",
+    "options": [
+      "Output esperado",
+      "Evidencia producida",
+      "Responsable siguiente",
+      "Condiciones de fallo",
+      "Permiso global irrestricto"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Un handoff necesita contrato y criterios; permisos irrestrictos aumentan riesgo.",
+    "source": "Sub-agent orchestration"
+  },
+  {
+    "id": "Q039",
+    "domain": "Multiagente",
+    "type": "single",
+    "prompt": "Cuando usar fallback en vez de retry?",
+    "options": [
+      "Cuando la misma causa persiste y existe estrategia alternativa",
+      "Siempre tras primer fallo",
+      "Nunca",
+      "Solo si main esta protegido"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "Fallback aplica cuando retry no cambia condiciones y hay ruta alternativa.",
+    "source": "Retry/fallback"
+  },
+  {
+    "id": "Q040",
+    "domain": "Multiagente",
+    "type": "multi",
+    "prompt": "Que ayuda a observar sistemas multiagente?",
+    "options": [
+      "Streaming events",
+      "OpenTelemetry",
+      "Logs de tool calls",
+      "Handoffs registrados",
+      "Ocultar subagentes"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Observabilidad multiagente requiere eventos, trazas, tool calls y handoffs.",
+    "source": "Observability"
+  },
+  {
+    "id": "Q041",
+    "domain": "Multiagente",
+    "type": "single",
+    "prompt": "Un primary agent delega sin especificar archivos permitidos. Que falta?",
+    "options": [
+      "Write scope",
+      "Exam sandbox",
+      "XP badge",
+      "Content exclusion"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "Sin write scope hay riesgo de conflicto y cambios fuera de alcance.",
+    "source": "Delegation"
+  },
+  {
+    "id": "Q042",
+    "domain": "Multiagente",
+    "type": "single",
+    "prompt": "Persistir sesion indefinidamente puede causar...",
+    "options": [
+      "Consolidacion de contexto obsoleto",
+      "Branch protection mas fuerte",
+      "Menor necesidad de checks",
+      "Automatic merge seguro"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "Persistencia sin invalidacion perpetua errores y stale context.",
+    "source": "Session persistence"
+  },
+  {
+    "id": "Q043",
+    "domain": "Multiagente",
+    "type": "multi",
+    "prompt": "Que roles separarias en un flujo complejo?",
+    "options": [
+      "Planner",
+      "Executor",
+      "Reviewer/validator",
+      "Recovery/escalation",
+      "Agente que aprueba su propio PR"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Separar roles mejora control. El agente no deberia aprobar su propio trabajo.",
+    "source": "Multi-agent roles"
+  },
+  {
+    "id": "Q044",
+    "domain": "Multiagente",
+    "type": "single",
+    "prompt": "Que es mejor para dos subagentes paralelos?",
+    "options": [
+      "Mismo branch y mismos archivos",
+      "Branches/scopes disjuntos con merge/review posterior",
+      "Permiso admin para ambos",
+      "Sin logs"
+    ],
+    "correct": [
+      1
+    ],
+    "explanation": "Scopes disjuntos reducen conflictos y facilitan integracion.",
+    "source": "Concurrency"
+  },
+  {
+    "id": "Q045",
+    "domain": "Guardrails",
+    "type": "single",
+    "prompt": "Que accion exige human-in-the-loop casi siempre?",
+    "options": [
+      "Cambiar docs",
+      "Rotar secreto o desplegar prod",
+      "Corregir typo",
+      "Leer README"
+    ],
+    "correct": [
+      1
+    ],
+    "explanation": "Secrets y produccion son cambios sensibles con impacto material.",
+    "source": "Guardrails"
+  },
+  {
+    "id": "Q046",
+    "domain": "Guardrails",
+    "type": "multi",
+    "prompt": "Que controles protegen .github/workflows?",
+    "options": [
+      "CODEOWNERS",
+      "Required reviews",
+      "Rulesets/branch protection",
+      "Checks",
+      "Permitir push directo de agentes"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Workflows son sensibles y deben protegerse con owners, reviews, rules y checks.",
+    "source": "Build guardrails"
+  },
+  {
+    "id": "Q047",
+    "domain": "Guardrails",
+    "type": "single",
+    "prompt": "Least privilege en GITHUB_TOKEN implica...",
+    "options": [
+      "Dar write-all por comodidad",
+      "Permisos minimos y elevar solo donde haga falta",
+      "Usar token personal en logs",
+      "Desactivar permissions"
+    ],
+    "correct": [
+      1
+    ],
+    "explanation": "Minimizar permisos reduce blast radius.",
+    "source": "GITHUB_TOKEN"
+  },
+  {
+    "id": "Q048",
+    "domain": "Guardrails",
+    "type": "multi",
+    "prompt": "Que medidas reducen riesgo de prompt injection en issues/comments?",
+    "options": [
+      "Scope limitado",
+      "Review humana",
+      "Logs/evidencia",
+      "Firewall/tool restrictions",
+      "Dar instrucciones al agente para obedecer cualquier comentario"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Comentarios pueden contener instrucciones hostiles; hay que limitar, revisar y registrar.",
+    "source": "Responsible use"
+  },
+  {
+    "id": "Q049",
+    "domain": "Guardrails",
+    "type": "single",
+    "prompt": "El agente quiere mergear su propio PR. Que deberia pasar?",
+    "options": [
+      "Permitido si esta seguro",
+      "Bloqueado por policy/review externa",
+      "Solo si es docs",
+      "Siempre automatico"
+    ],
+    "correct": [
+      1
+    ],
+    "explanation": "Accountability exige aprobacion externa o policy gate, no autoaprobacion.",
+    "source": "Accountability"
+  },
+  {
+    "id": "Q050",
+    "domain": "Guardrails",
+    "type": "multi",
+    "prompt": "Que incluiria una autonomy matrix?",
+    "options": [
+      "Accion",
+      "Riesgo",
+      "Permiso",
+      "Approval",
+      "Rollback/evidence"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "explanation": "La matriz conecta accion con riesgo, permiso, aprobacion y recuperacion.",
+    "source": "Autonomy levels"
+  },
+  {
+    "id": "Q051",
+    "domain": "Guardrails",
+    "type": "single",
+    "prompt": "Safe outputs en Agentic Workflows separan...",
+    "options": [
+      "Propuesta del agente y job con permisos de escritura",
+      "Main y README",
+      "MCP y memoria",
+      "Code scanning y SARIF"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "El agente produce output seguro; otro job controlado aplica cambios si cumplen reglas.",
+    "source": "Agentic Workflows"
+  },
+  {
+    "id": "Q052",
+    "domain": "Guardrails",
+    "type": "single",
+    "prompt": "Una allowlist amplia para todos los MCP servers es...",
+    "options": [
+      "Gobernanza fuerte",
+      "Riesgo alto salvo justificacion y controles",
+      "Obligatoria para aprobar",
+      "Igual que registry-only"
+    ],
+    "correct": [
+      1
+    ],
+    "explanation": "Allow all aumenta superficie; registry/allowlist controlada es mas segura.",
+    "source": "MCP allow lists"
+  },
+  {
+    "id": "Q053",
+    "domain": "GitHub Governance",
+    "type": "single",
+    "prompt": "CODEOWNERS se vuelve control efectivo cuando...",
+    "options": [
+      "Existe archivo solamente",
+      "Se combina con required review de owners",
+      "Lo lee el agente",
+      "Esta en README"
+    ],
+    "correct": [
+      1
+    ],
+    "explanation": "CODEOWNERS por si solo enruta; para bloquear merge necesita required review/branch rules.",
+    "source": "CODEOWNERS"
+  },
+  {
+    "id": "Q054",
+    "domain": "GitHub Governance",
+    "type": "multi",
+    "prompt": "Que pueden exigir rulesets?",
+    "options": [
+      "Pull request",
+      "Required status checks",
+      "Signed commits",
+      "Code scanning",
+      "Ignorar branch protections"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Rulesets son policy-as-code y pueden exigir PR, checks, firmas, scanning, etc.",
+    "source": "Rulesets"
+  },
+  {
+    "id": "Q055",
+    "domain": "GitHub Governance",
+    "type": "single",
+    "prompt": "Environment approvals sirven principalmente para...",
+    "options": [
+      "Controlar despliegues y secretos de entorno",
+      "Buscar texto",
+      "Crear issues",
+      "Indexar repos"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "Environments protegen deploys, reviewers y secrets por entorno.",
+    "source": "Environments"
+  },
+  {
+    "id": "Q056",
+    "domain": "GitHub Governance",
+    "type": "multi",
+    "prompt": "Que pertenece a GitHub Actions evidence?",
+    "options": [
+      "Logs",
+      "Artifacts",
+      "Conclusion de jobs",
+      "Workflow run id",
+      "Color del logo"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Runs, logs, artifacts y conclusiones permiten auditoria.",
+    "source": "Actions"
+  },
+  {
+    "id": "Q057",
+    "domain": "GitHub Governance",
+    "type": "single",
+    "prompt": "Usar logs como transporte estructurado entre jobs es inferior a...",
+    "options": [
+      "Outputs/artifacts",
+      "Comentarios sin formato",
+      "Memoria del agente",
+      "Capturas"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "Outputs y artifacts son contratos mas fiables que parsear logs.",
+    "source": "Workflow outputs"
+  },
+  {
+    "id": "Q058",
+    "domain": "GitHub Governance",
+    "type": "single",
+    "prompt": "Un required check queda pending porque el workflow no se ejecuto en esa rama. Que revisar?",
+    "options": [
+      "Triggers/branch filters y nombre exacto del check",
+      "README",
+      "Color de badge",
+      "MCP roots"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "Required checks dependen de nombres, triggers y condiciones correctas.",
+    "source": "Required checks"
+  },
+  {
+    "id": "Q059",
+    "domain": "GitHub Governance",
+    "type": "multi",
+    "prompt": "Que secretos nunca deberian exponerse en prompts o logs?",
+    "options": [
+      "PAT",
+      "Cloud credentials",
+      "Deployment keys",
+      "API tokens",
+      "Nombre de branch"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Credenciales y tokens deben tratarse como secretos; un nombre de branch no suele ser secreto.",
+    "source": "Secrets"
+  },
+  {
+    "id": "Q060",
+    "domain": "GitHub Governance",
+    "type": "single",
+    "prompt": "Workflow artifacts son utiles porque...",
+    "options": [
+      "Persisten evidencias descargables del run",
+      "Aprueban PRs automaticamente",
+      "Sustituyen tests",
+      "Dan permisos write"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "Artifacts conservan reportes/resultados mas alla del scrollback.",
+    "source": "Artifacts"
+  },
+  {
+    "id": "Q061",
+    "domain": "Copilot Agents",
+    "type": "single",
+    "prompt": "Cloud agent frente a IDE agent mode: diferencia clave?",
+    "options": [
+      "Cloud corre en GitHub Actions; IDE agent mode en entorno local",
+      "Son identicos",
+      "IDE siempre crea PR",
+      "Cloud no usa PR"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "El entorno de ejecucion y el workflow son distintos.",
+    "source": "Cloud agent"
+  },
+  {
+    "id": "Q062",
+    "domain": "Copilot Agents",
+    "type": "multi",
+    "prompt": "Custom agents pueden definirse mediante...",
+    "options": [
+      ".agent.md",
+      "applyTo",
+      "tools",
+      "skills/hooks",
+      "Permisos admin automaticos"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Custom agents se especializan con archivo, scope, herramientas, skills y hooks; no dan admin automatico.",
+    "source": "Custom agents"
+  },
+  {
+    "id": "Q063",
+    "domain": "Copilot Agents",
+    "type": "single",
+    "prompt": "Que controla mejor acciones peligrosas en CLI?",
+    "options": [
+      "Deny/allow tools",
+      "Pedir por favor",
+      "Cambiar titulo",
+      "Usar mas contexto"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "Allowed/denied tools es enforcement mas fuerte que una instruccion blanda.",
+    "source": "Copilot CLI"
+  },
+  {
+    "id": "Q064",
+    "domain": "Copilot Agents",
+    "type": "multi",
+    "prompt": "Que deberias probar antes de liberar un custom agent?",
+    "options": [
+      "Scope",
+      "Tools",
+      "Hooks",
+      "Logs/resultados",
+      "Que puede saltar reviews"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Testing debe revisar alcance, herramientas, hooks y outputs.",
+    "source": "Test custom agents"
+  },
+  {
+    "id": "Q065",
+    "domain": "Copilot Agents",
+    "type": "single",
+    "prompt": "Firewall del cloud agent reduce riesgo de...",
+    "options": [
+      "Acceso externo/exfiltracion no deseada",
+      "Branch conflict",
+      "Falta de README",
+      "Unit count"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "El firewall limita red externa y reduce superficie de exfiltracion.",
+    "source": "Agent firewall"
+  },
+  {
+    "id": "Q066",
+    "domain": "Copilot Agents",
+    "type": "single",
+    "prompt": "Rollback natural antes de merge es...",
+    "options": [
+      "Cerrar o descartar PR/branch",
+      "Revert commit de main",
+      "Desactivar repo",
+      "Eliminar logs"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "Antes de merge el cambio esta aislado; cerrar PR o borrar rama suele bastar.",
+    "source": "Rollback"
+  },
+  {
+    "id": "Q067",
+    "domain": "Copilot Agents",
+    "type": "single",
+    "prompt": "Rollback despues de merge suele ser...",
+    "options": [
+      "Revert commit/PR",
+      "Cerrar issue",
+      "Ignorar",
+      "Cambiar prompt"
+    ],
+    "correct": [
+      0
+    ],
+    "explanation": "Una vez mergeado, se revierte el commit/PR o se aplica fix forward segun politica.",
+    "source": "Rollback"
+  },
+  {
+    "id": "Q068",
+    "domain": "Copilot Agents",
+    "type": "multi",
+    "prompt": "Agentic Workflows son especialmente utiles para...",
+    "options": [
+      "Tareas programadas",
+      "Reportes/triage",
+      "Safe outputs",
+      "CI failure analysis",
+      "Cambios secretos sin review"
+    ],
+    "correct": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "explanation": "Son buenos para continuous AI acotado; secretos sin review no son apropiados.",
+    "source": "Agentic Workflows"
+  }
+];
+
 const state = {
   route: localStorage.getItem("gh600.route") || "Aprobar + AgentOS",
   activeTab: localStorage.getItem("gh600.tab") || "lecciones",
@@ -824,7 +2084,12 @@ const state = {
   track: "Todas",
   done: JSON.parse(localStorage.getItem("gh600.done") || "{}"),
   sourceDone: JSON.parse(localStorage.getItem("gh600.sourceDone") || "{}"),
-  notes: JSON.parse(localStorage.getItem("gh600.notes") || "{}")
+  notes: JSON.parse(localStorage.getItem("gh600.notes") || "{}"),
+  examDomain: localStorage.getItem("gh600.examDomain") || "Todas",
+  examIndex: Number(localStorage.getItem("gh600.examIndex") || "0"),
+  examStats: JSON.parse(localStorage.getItem("gh600.examStats") || "{}"),
+  examAnswer: [],
+  examSubmitted: false
 };
 
 function save() {
@@ -834,6 +2099,9 @@ function save() {
   localStorage.setItem("gh600.done", JSON.stringify(state.done));
   localStorage.setItem("gh600.sourceDone", JSON.stringify(state.sourceDone));
   localStorage.setItem("gh600.notes", JSON.stringify(state.notes));
+  localStorage.setItem("gh600.examDomain", state.examDomain);
+  localStorage.setItem("gh600.examIndex", String(state.examIndex));
+  localStorage.setItem("gh600.examStats", JSON.stringify(state.examStats));
 }
 
 function esc(value) {
@@ -892,6 +2160,30 @@ function sourceById(id) {
 
 function allSources() {
   return Object.keys(SOURCES).map(sourceById);
+}
+
+function examDomains() {
+  return ["Todas", "Fallos", ...Array.from(new Set(QUESTION_BANK.map((question) => question.domain)))];
+}
+
+function examQuestions() {
+  let questions = QUESTION_BANK;
+  if (state.examDomain === "Fallos") {
+    questions = questions.filter((question) => {
+      const stat = state.examStats[question.id];
+      return stat && stat.wrong > 0 && !stat.lastCorrect;
+    });
+    if (!questions.length) questions = QUESTION_BANK;
+  } else if (state.examDomain !== "Todas") {
+    questions = questions.filter((question) => question.domain === state.examDomain);
+  }
+  return questions;
+}
+
+function isAnswerCorrect(question, answer) {
+  const expected = [...question.correct].sort((a, b) => a - b).join(",");
+  const actual = [...answer].sort((a, b) => a - b).join(",");
+  return expected === actual;
 }
 
 function sourceProgress(ids) {
@@ -1133,15 +2425,110 @@ function renderChecklist() {
   `;
 }
 
+function renderExam() {
+  const questions = examQuestions();
+  const index = questions.length ? state.examIndex % questions.length : 0;
+  const question = questions[index];
+  const answered = Object.values(state.examStats).filter((stat) => stat.attempts > 0).length;
+  const correctTotal = Object.values(state.examStats).filter((stat) => stat.lastCorrect).length;
+  const isSubmitted = state.examSubmitted && question;
+  const correct = question ? isAnswerCorrect(question, state.examAnswer) : false;
+
+  if (!question) {
+    return `
+      ${renderHero()}
+      <section class="panel" style="margin-top:18px">
+        <h3>Examenes</h3>
+        <p>No hay preguntas disponibles para este filtro.</p>
+      </section>
+    `;
+  }
+
+  return `
+    ${renderHero()}
+    <section class="exam-shell">
+      <div class="exam-toolbar">
+        <div>
+          <span class="eyebrow">Simulador funcional</span>
+          <h3>Pregunta ${index + 1} de ${questions.length}</h3>
+          <p>Tipo: ${question.type === "multi" ? "varias respuestas" : "respuesta unica"} · Dominio: ${esc(question.domain)} · Fuente: ${esc(question.source || "material sintetizado")}</p>
+        </div>
+        <div class="exam-controls">
+          <select id="examDomain">
+            ${examDomains().map((domain) => `<option ${domain === state.examDomain ? "selected" : ""}>${esc(domain)}</option>`).join("")}
+          </select>
+          <button class="btn" id="resetExam">Reset examenes</button>
+        </div>
+      </div>
+
+      <div class="metrics exam-metrics">
+        <div class="metric"><strong>${QUESTION_BANK.length}</strong><span>Preguntas</span></div>
+        <div class="metric"><strong>${answered}</strong><span>Intentadas</span></div>
+        <div class="metric"><strong>${correctTotal}</strong><span>Ult. correctas</span></div>
+        <div class="metric"><strong>${examDomains().length - 2}</strong><span>Dominios</span></div>
+      </div>
+
+      <article class="exam-card">
+        <div class="exam-question">${esc(question.prompt)}</div>
+        <div class="option-list">
+          ${question.options.map((option, optionIndex) => {
+            const selected = state.examAnswer.includes(optionIndex);
+            const shouldBe = question.correct.includes(optionIndex);
+            const stateClass = isSubmitted
+              ? shouldBe
+                ? "correct"
+                : selected
+                  ? "incorrect"
+                  : ""
+              : selected
+                ? "selected"
+                : "";
+            return `
+              <label class="option-card ${stateClass}">
+                <input
+                  type="${question.type === "multi" ? "checkbox" : "radio"}"
+                  name="exam-answer"
+                  data-exam-answer="${optionIndex}"
+                  ${selected ? "checked" : ""}
+                  ${isSubmitted ? "disabled" : ""}
+                />
+                <span>${esc(option)}</span>
+              </label>
+            `;
+          }).join("")}
+        </div>
+
+        ${isSubmitted ? `
+          <section class="answer-panel ${correct ? "answer-ok" : "answer-bad"}">
+            <h4>${correct ? "Correcto" : "Incorrecto"}</h4>
+            <p>${esc(question.explanation)}</p>
+            ${!correct ? `<p><strong>Respuesta correcta:</strong> ${question.correct.map((i) => esc(question.options[i])).join(" · ")}</p>` : ""}
+          </section>
+        ` : `
+          <p class="exam-hint">${question.type === "multi" ? "Puede haber varias respuestas correctas." : "Selecciona una respuesta."}</p>
+        `}
+
+        <div class="exam-actions">
+          <button class="btn primary" id="submitExam" ${isSubmitted ? "disabled" : ""}>Corregir</button>
+          <button class="btn" id="nextExam">Siguiente</button>
+        </div>
+      </article>
+    </section>
+  `;
+}
+
 function renderMain() {
   const tabs = [
     ["lecciones", "Lecciones"],
     ["fuentes", "Fuentes"],
+    ["examenes", "Examenes"],
     ["diagramas", "Diagramas"],
     ["checklist", "Checklist"]
   ];
   const content = state.activeTab === "fuentes"
     ? renderSources()
+    : state.activeTab === "examenes"
+      ? renderExam()
     : state.activeTab === "diagramas"
       ? renderDiagrams()
       : state.activeTab === "checklist"
@@ -1223,6 +2610,84 @@ function bind() {
       render();
     });
   });
+
+  document.querySelectorAll("[data-exam-answer]").forEach((input) => {
+    input.addEventListener("change", () => {
+      const value = Number(input.dataset.examAnswer);
+      const questions = examQuestions();
+      const question = questions[state.examIndex % questions.length];
+      if (question.type === "multi") {
+        if (input.checked) {
+          state.examAnswer = Array.from(new Set([...state.examAnswer, value]));
+        } else {
+          state.examAnswer = state.examAnswer.filter((item) => item !== value);
+        }
+      } else {
+        state.examAnswer = [value];
+      }
+      render();
+    });
+  });
+
+  const examDomain = document.getElementById("examDomain");
+  if (examDomain) {
+    examDomain.addEventListener("change", () => {
+      state.examDomain = examDomain.value;
+      state.examIndex = 0;
+      state.examAnswer = [];
+      state.examSubmitted = false;
+      save();
+      render();
+    });
+  }
+
+  const submitExam = document.getElementById("submitExam");
+  if (submitExam) {
+    submitExam.addEventListener("click", () => {
+      const questions = examQuestions();
+      const question = questions[state.examIndex % questions.length];
+      if (!state.examAnswer.length) {
+        toast("Selecciona una respuesta");
+        return;
+      }
+      const correct = isAnswerCorrect(question, state.examAnswer);
+      const previous = state.examStats[question.id] || { attempts: 0, correct: 0, wrong: 0, lastCorrect: false };
+      state.examStats[question.id] = {
+        attempts: previous.attempts + 1,
+        correct: previous.correct + (correct ? 1 : 0),
+        wrong: previous.wrong + (correct ? 0 : 1),
+        lastCorrect: correct
+      };
+      state.examSubmitted = true;
+      save();
+      render();
+    });
+  }
+
+  const nextExam = document.getElementById("nextExam");
+  if (nextExam) {
+    nextExam.addEventListener("click", () => {
+      const questions = examQuestions();
+      state.examIndex = questions.length ? (state.examIndex + 1) % questions.length : 0;
+      state.examAnswer = [];
+      state.examSubmitted = false;
+      save();
+      render();
+    });
+  }
+
+  const resetExam = document.getElementById("resetExam");
+  if (resetExam) {
+    resetExam.addEventListener("click", () => {
+      if (!confirm("Resetear resultados de examenes?")) return;
+      state.examStats = {};
+      state.examIndex = 0;
+      state.examAnswer = [];
+      state.examSubmitted = false;
+      save();
+      render();
+    });
+  }
 
   document.querySelectorAll("[data-check-final]").forEach((box) => {
     box.addEventListener("change", () => {
